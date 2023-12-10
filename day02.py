@@ -44,8 +44,44 @@ def part_1(input):
 		answer += game_number if valid_game else 0
 	print(answer)
 
+def part_2(input):
+	answer = 0
+
+	for line in input:
+		# get the game
+		game = line.split(':')[1]
+
+		# get the sets of the game
+		min_red = 0
+		min_green = 0
+		min_blue = 0
+
+		sets = game.split(';')
+		
+		for set in sets:
+			# look for each color in each set
+			check_red = re.findall("\d+ red", set)
+			check_green = re.findall("\d+ green", set)
+			check_blue = re.findall("\d+ blue", set)
+
+			# find the minimum number of each color
+			if check_red:
+				num_red = int(re.findall("\d+", check_red[0])[0])
+				min_red = num_red if num_red > min_red else min_red
+			if check_green:
+				num_green = int(re.findall("\d+", check_green[0])[0])
+				min_green = num_green if num_green > min_green else min_green
+			if check_blue:
+				num_blue = int(re.findall("\d+", check_blue[0])[0])
+				min_blue = num_blue if num_blue > min_blue else min_blue
+
+		power = min_red * min_green * min_blue
+		answer += power
+	print(answer)
+
+
 if __name__ == '__main__':
 	with open(INPUT_FILE) as f:
 		input = [line.strip() for line in f.readlines()]
 	part_1(input)
-	# part_2(input)
+	part_2(input)
